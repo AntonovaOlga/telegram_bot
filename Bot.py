@@ -11,7 +11,7 @@ from voice_handler import voice_handler
 try:
     from settings import API_TOKEN, PROXY_URL, PROXY_LOGIN, PROXY_PASSWORD
 except Exception:
-    exit("Do cp settings.py.default settings.py and set TOKEN and GROUP_ID")
+    exit("Do cp settings.py.default settings.py and set API_TOKEN and proxy info")
 
 logging.basicConfig(level=logging.INFO)
 PROXY_AUTH = aiohttp.BasicAuth(
@@ -21,7 +21,7 @@ PROXY_AUTH = aiohttp.BasicAuth(
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
-START_MSG = "TestBotForDSP save all audio message in WAVE format and picture with faces "
+START_MSG = "TTestBotForDSP save all audio message and convert in WAVE format, and save photo with faces "
 
 
 @dp.message_handler(commands=['start', 'help'])
