@@ -1,37 +1,27 @@
+# -*- coding: utf-8 -*-
 import logging
-import os
-from pprint import pprint
-import requests
-import re
 
+from faces_handler import faces_handler
 import aiohttp
 from aiogram import Bot, Dispatcher, executor, types
-from aiogram.types import ContentType
+from pony.orm import db_session
 
-API_TOKEN = '907319109:AAFQEUR38BHEI4bNRKo7LkIBrb1Vi4nUcTs'
+from voice_handler import voice_handler
 
-PROXY_URL = "socks5://ragnarok.imagespark.ru:1080"
-PROXY_AUTH = aiohttp.BasicAuth(
-    login='tg',
-    password='E32mHfxiuuV4Mb7rE2IbvAZETMc'
-)
-START_MSG = "TestBotForDSP save all audio message in WAVE format and picture with faces "
+try:
+    from settings import API_TOKEN, PROXY_URL, PROXY_LOGIN, PROXY_PASSWORD
+except Exception:
+    exit("Do cp settings.py.default settings.py and set TOKEN and GROUP_ID")
 
 logging.basicConfig(level=logging.INFO)
-bot = Bot(token=API_TOKEN, proxy=PROXY_URL, proxy_auth=PROXY_AUTH)
+PROXY_AUTH = aiohttp.BasicAuth(
+    login=PROXY_LOGIN,
+    password=PROXY_PASSWORD
+)
+bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
-
-async def save_file(message: types.Message, msg_type: str):
-    user_id = message.from_user.id
-    file_id = message[msg_type].file_unique_id
-    file_for_download = await message.voice.get_file()
-    save_path_dir = os.path.join('voice_files', f'{user_id}')
-    if not os.path.exists(save_path_dir):
-        os.makedirs(save_path_dir)
-    file_extension = file_for_download['file_path'].split('.')[-1]
-    save_path = os.path.join(f'{save_path_dir}', f'{file_id}.{file_extension}')
-    await file_for_download.download(save_path)
+START_MSG = "TestBotForDSP save all audio message in WAVE format and picture with faces "
 
 
 @dp.message_handler(commands=['start', 'help'])
@@ -42,10 +32,16 @@ async def send_welcome(message: types.Message):
     await message.answer(START_MSG)
 
 
-@dp.message_handler(content_types=ContentType.VOICE)
-async def voice_handler(message: types.Message):
+@dp.message_handler(content_types=types.ContentType.VOICE)
+async def voice_message_handler(message: types.Message):
     logging.info('Поступило голосовое сообщение')
-    await save_file(message, 'voice')
+    await voice_handler(message)
+
+
+@dp.message_handler(content_types=types.ContentType.PHOTO)
+async def photo_massage_handler(message: types.Message):
+    logging.info('Поступила картинка')
+    await faces_handler(message)
 
 
 if __name__ == '__main__':

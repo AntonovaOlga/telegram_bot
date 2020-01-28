@@ -1,4 +1,4 @@
-finance.db
+
 **/.DS_Store
 .idea/
 **/__pycache__
@@ -8,3 +8,8 @@ finance.db
 *.out
 .ipynb_checkpoints
 venv/
+voice_files/
+voice_wav_files/
+img_with_faces/
+database.sqlite
+settings.py

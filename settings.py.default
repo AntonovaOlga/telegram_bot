@@ -1,0 +1,5 @@
+# -*- coding: utf-8 -*-
+API_TOKEN = ''
+PROXY_URL = ''
+PROXY_LOGIN = ''
+PROXY_PASSWORD = ''
