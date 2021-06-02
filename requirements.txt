@@ -19,5 +19,5 @@ pydub==0.23.1
 PySoundFile==0.9.0.post1
 pytz==2019.3
 requests==2.22.0
-urllib3==1.25.8
+urllib3==1.26.5
 yarl==1.4.2
