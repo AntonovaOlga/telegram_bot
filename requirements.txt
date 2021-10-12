@@ -12,7 +12,7 @@ ffprobe==0.5
 idna==2.8
 multidict==4.7.4
 numpy==1.18.1
-opencv-python==4.1.2.30
+opencv-python==4.2.0.32
 pony==0.7.11
 pycparser==2.19
 pydub==0.23.1
